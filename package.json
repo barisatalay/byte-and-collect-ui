@@ -1,5 +1,5 @@
 {
-  "name": "nextjs-ethers-metamask-connect",
+  "name": "byte-and-collect-ui",
   "private": true,
   "scripts": {
     "dev": "next dev",
