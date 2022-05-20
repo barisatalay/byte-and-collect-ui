@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
+import PopUpComponent from "../../utils/PopUpComponent";
 
 export default function CellTableComponent(props) {
+  const [popupVisible, setPopupVisible] = useState(false);
   const [updating, setUpdating] = useState(false);
   const [cellInfo, setCellInfo] = useState([]);
   const [maxCellSize, setMaxCellSize] = useState(0);
@@ -61,7 +63,11 @@ export default function CellTableComponent(props) {
     setUpdating(false);
   }
   function onCellClick(x, y) {
-    alert(x + "-" + y + ": " + cellInfo[y][x]);
+    console.log(x + "-" + y + ": " + cellInfo[y][x]);
+    setPopupVisible(true);
+  }
+  function onPopUpClick() {
+    alert("test");
   }
 
   return (
@@ -82,6 +88,10 @@ export default function CellTableComponent(props) {
           })}
         </tbody>
       </table>
+      <PopUpComponent visible={popupVisible} setVisible={setPopupVisible}>
+        <h3>My popup</h3>
+        <p>This is Sparta!</p>
+      </PopUpComponent>
     </div>
   );
 }
