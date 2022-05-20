@@ -82,7 +82,10 @@ export default function Home() {
       <span>Balance: {userData.balance}</span>
 
       <div className="App">
-        <CellTableComponent gameContract={gameContract} />
+        <CellTableComponent
+          gameContract={gameContract}
+          connected={isConnected}
+        />
       </div>
     </div>
   );

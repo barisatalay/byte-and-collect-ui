@@ -24,6 +24,10 @@ export default function CellTableComponent(props) {
     };
   }, []);
 
+  useEffect(() => {
+    if (!props.connected) setCellInfo([]);
+  }, [props.connected]);
+
   async function fetchCellInfo(gameContract) {
     if (typeof window.ethereum !== "undefined") {
       try {
@@ -56,6 +60,9 @@ export default function CellTableComponent(props) {
   function endTableUpdate() {
     setUpdating(false);
   }
+  function onCellClick(x, y) {
+    alert(x + "-" + y + ": " + cellInfo[y][x]);
+  }
 
   return (
     <div>
@@ -64,9 +71,11 @@ export default function CellTableComponent(props) {
         <tbody>
           {cellInfo.map((array, y) => {
             return (
-              <tr key={y} style={{ border: 1 }}>
+              <tr key={y}>
                 {array.map((cell, x) => (
-                  <td key={y + "" + x}>{cell}</td>
+                  <td key={y + "-" + x} onClick={() => onCellClick(x, y)}>
+                    {cell}
+                  </td>
                 ))}
               </tr>
             );

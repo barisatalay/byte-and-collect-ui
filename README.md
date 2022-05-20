@@ -2,6 +2,8 @@
 
 ## Quickstart
 
+https://baris-atalay.gitbook.io/untitled/
+
 First at all, you need to open up hardhat node or something else
 
 ```

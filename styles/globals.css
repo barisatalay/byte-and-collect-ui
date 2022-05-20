@@ -17,12 +17,12 @@ a {
 
 td {
   border: 1px solid;
-  width: 10px;
-  height: 10px;
-  padding: 10px;
+  height: 200px;
   text-align: center;
 }
+
 table {
-  width: 100%;
+  width: 2000px;
+  table-layout: fixed;
   border-collapse: collapse;
 }
