@@ -1,12 +1,30 @@
 import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
-import PopUpComponent from "../../utils/PopUpComponent";
+import Modal from "react-modal";
+
+const customStyles = {
+  content: {
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+  },
+};
 
 export default function CellTableComponent(props) {
-  const [popupVisible, setPopupVisible] = useState(false);
+  const [selectedCell, setSelectedCell] = useState({
+    x: "",
+    y: "",
+    lastPrice: 0.0,
+  });
+  const [modalIsOpen, setIsOpen] = useState(false);
   const [updating, setUpdating] = useState(false);
   const [cellInfo, setCellInfo] = useState([]);
   const [maxCellSize, setMaxCellSize] = useState(0);
+
+  //et subtitle;
 
   useEffect(() => {
     if (props.gameContract != undefined) {
@@ -64,10 +82,21 @@ export default function CellTableComponent(props) {
   }
   function onCellClick(x, y) {
     console.log(x + "-" + y + ": " + cellInfo[y][x]);
-    setPopupVisible(true);
+    setSelectedCell({
+      x: "" + x,
+      y: "" + y,
+      lastPrice: 0.0,
+    });
+    setIsOpen(true);
   }
-  function onPopUpClick() {
-    alert("test");
+
+  function afterOpenModal() {
+    // references are now sync'd and can be accessed.
+    //subtitle.style.color = "#f00";
+  }
+
+  function closeModal() {
+    setIsOpen(false);
   }
 
   return (
@@ -79,8 +108,8 @@ export default function CellTableComponent(props) {
             return (
               <tr key={y}>
                 {array.map((cell, x) => (
-                  <td key={y + "-" + x} onClick={() => onCellClick(x, y)}>
-                    {cell}
+                  <td key={y + "-" + x}>
+                    <button onClick={() => onCellClick(x, y)}>Attack</button>
                   </td>
                 ))}
               </tr>
@@ -88,10 +117,18 @@ export default function CellTableComponent(props) {
           })}
         </tbody>
       </table>
-      <PopUpComponent visible={popupVisible} setVisible={setPopupVisible}>
-        <h3>My popup</h3>
-        <p>This is Sparta!</p>
-      </PopUpComponent>
+
+      <Modal
+        isOpen={modalIsOpen}
+        onAfterOpen={afterOpenModal}
+        onRequestClose={closeModal}
+        style={customStyles}
+        contentLabel="Cell Model"
+      >
+        <h2>{selectedCell.x + " - " + selectedCell.y}</h2>
+        <button onClick={closeModal}>close</button>
+        <div>I am a modal</div>
+      </Modal>
     </div>
   );
 }
