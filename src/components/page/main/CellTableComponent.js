@@ -6,10 +6,12 @@ const customStyles = {
   content: {
     top: "50%",
     left: "50%",
+    minWidth: "400px",
     right: "auto",
     bottom: "auto",
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
+    background: "#EEEEEE",
   },
 };
 
@@ -98,7 +100,7 @@ export default function CellTableComponent(props) {
   function closeModal() {
     setIsOpen(false);
   }
-
+  //<button onClick={closeModal}>close</button>
   return (
     <div>
       <span>{updating ? "Loading" : ""}</span>
@@ -125,9 +127,10 @@ export default function CellTableComponent(props) {
         style={customStyles}
         contentLabel="Cell Model"
       >
-        <h2>{selectedCell.x + " - " + selectedCell.y}</h2>
-        <button onClick={closeModal}>close</button>
-        <div>I am a modal</div>
+        <h1>Cell: {selectedCell.x + " - " + selectedCell.y}</h1>
+
+        <div className="cell_modal_btn cell_modal_btn_bite">Bite it!</div>
+        <div className="cell_modal_btn cell_modal_btn_info">Information</div>
       </Modal>
     </div>
   );

@@ -27,29 +27,29 @@ table {
   border-collapse: collapse;
 }
 
-.popup{
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.2);
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.cell_modal_btn{
+  border-radius: 4px;
+  padding: 10px 5px;
+  text-align: center;
+  color: white;
+  margin-bottom: 50px;
+  transition-duration: 0.4s;
 }
 
-.popup-inner{
-  position: relative;
-  padding: 32px;
-  width: 100px;
-  max-width: 640px;
-  background-color: #fff;
+.cell_modal_btn_bite{
+  background-color: #FF1744; /* Red A400 */
 }
 
-.popup-inner .close-btn{
-  position: absolute;
-  top: 16px;
-  right: 16px;
+.cell_modal_btn_bite:hover {
+  background-color: #D50000; /* Red A700 */
+  cursor: pointer;
+}
+
+.cell_modal_btn_info{
+  background-color: #00E676; /* Green A400 */
+}
+
+.cell_modal_btn_info:hover {
+  background-color: #00C853; /* Green A700 */
+  cursor: pointer;
 }
