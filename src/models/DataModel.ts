@@ -12,10 +12,12 @@ export class UserModel {
 export class CellModel {
     x: number = 0
     y: number = 0
-    lastPrice: BigNumberish = 0.0
-    constructor(_x: number, _y: number, _lastPrice: BigNumberish) {
+    price: BigNumberish
+    newPrice: BigNumberish
+    constructor(_x: number, _y: number, _price: BigNumberish, _newPrice: BigNumberish) {
         this.x = _x
         this.y = _y
-        this.lastPrice = _lastPrice
+        this.price = _price
+        this.newPrice = _newPrice
     }
 }

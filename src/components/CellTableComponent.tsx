@@ -17,9 +17,9 @@ const customStyles = {
   };
 
 export default function CellTableComponent(props: any) {
-    const [selectedCell, setSelectedCell] = useState<CellModel>(new CellModel(0, 0, 0.0));
+    const [selectedCell, setSelectedCell] = useState<CellModel>(new CellModel(0, 0, 0.0, 0.0));
     const [updating, setUpdating] = useState(false);
-    const [cellInfo, setCellInfo] = useState<string[][]>([]);
+    const [cellInfo, setCellInfo] = useState<CellModel[][]>([]);
     const [maxCellSize, setMaxCellSize] = useState(0);
     const [modalIsOpen, setIsOpen] = useState(false);
 
@@ -59,18 +59,15 @@ export default function CellTableComponent(props: any) {
             const maxCellSize = await gameContract.getMaxCellSize();
             setMaxCellSize(maxCellSize);
             console.log("Max Cell Size: " + maxCellSize);
-            let cellData: string[][] = [];
-            //TODO tam liste için bir fonksiyon hazırlanacak
-            for (var y = 1; y <= maxCellSize; y++) {
-              let cell: string[] = [];
-              for (var x = 1; x <= maxCellSize; x++) {
-                const cellPrice = await gameContract.getCellLastPrice(x, y);
-                //console.log("X: " + x + " Y: "+ y + " Cell Price: " + cellPrice);
-                cell.push(ethers.utils.formatEther(cellPrice));
-              }
-              cellData.push(cell);
-            }
-            setCellInfo(cellData);
+
+            /*
+            const minCellPrice = await gameContract.getMinCellPrice();
+            const formatedMinCellPrice = ethers.utils.formatEther(minCellPrice);
+            const firstCellPrice = await gameContract.getCellLastPrice(0, 0);
+            const formatedFirstCellPrice = ethers.utils.formatEther(firstCellPrice);
+            */
+            const cellDataRemote = await gameContract.getCellBatch();
+            setCellInfo(cellDataRemote);
             //console.log(qwe);
           } catch (error) {
             alert(error);
@@ -79,9 +76,12 @@ export default function CellTableComponent(props: any) {
         }
       }
 
-      function onCellClick(x: number, y: number) {
-        console.log(x + "-" + y + ": " + cellInfo[y][x]);
-        setSelectedCell( new CellModel(x, y, 0.0));
+      function onCellClick(x: number, y: number, cellInfo: CellModel) {
+        const log = x + "-" + y +
+                    " price: " + ethers.utils.formatEther(cellInfo.price) +
+                    " newprice: " + ethers.utils.formatEther(cellInfo.newPrice);
+        console.log(log);
+        setSelectedCell(cellInfo);
         setIsOpen(true);
       }
 
@@ -94,6 +94,10 @@ export default function CellTableComponent(props: any) {
         setIsOpen(false);
       }
 
+      function onBiteClick(){
+        if (selectedCell.x == 0 || selectedCell.y == 0) return
+      }
+
       return (
     <div>
       <span>{updating ? "Loading" : ""}</span>
@@ -102,9 +106,9 @@ export default function CellTableComponent(props: any) {
           {cellInfo.map((array, y) => {
             return (
               <tr key={y}>
-                {array.map((cell, x) => (
-                  <td key={y + "-" + x}>
-                    <button onClick={() => onCellClick(x, y)}>Attack</button>
+                {array.map((cellInfo, x) => (
+                  <td key={y + "-" + x}  onClick={() => onCellClick(x, y, cellInfo)}>
+                    Click Me?
                   </td>
                 ))}
               </tr>
@@ -120,8 +124,8 @@ export default function CellTableComponent(props: any) {
         contentLabel="Cell Model"
       >
         <h1>Cell: {selectedCell.x + " - " + selectedCell.y}</h1>
-
-        <div className="cell_modal_btn cell_modal_btn_bite">Bite it!</div>
+        <p>Deposited Price: <b>{ ethers.utils.formatEther(selectedCell.price) }</b></p>
+        <div className="cell_modal_btn cell_modal_btn_bite"  onClick={() => onBiteClick()}>Bite it!</div>
         <div className="cell_modal_btn cell_modal_btn_info">Information</div>
       </Modal>
       </div>

@@ -176,6 +176,41 @@ export const CONTACT_ABI = [
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "getCellBatch",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint16",
+            "name": "x",
+            "type": "uint16"
+          },
+          {
+            "internalType": "uint16",
+            "name": "y",
+            "type": "uint16"
+          },
+          {
+            "internalType": "uint256",
+            "name": "price",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "newPrice",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct ByteAndCollect.CellInfo[][]",
+        "name": "response",
+        "type": "tuple[][]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "uint16",
