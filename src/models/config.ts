@@ -103,7 +103,13 @@ export const CONTACT_ABI = [
       }
     ],
     "name": "attackCell",
-    "outputs": [],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "payable",
     "type": "function"
   },
@@ -370,4 +376,4 @@ export const CONTACT_ABI = [
     "stateMutability": "nonpayable",
     "type": "function"
   }
-];
+]

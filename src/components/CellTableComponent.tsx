@@ -94,8 +94,21 @@ export default function CellTableComponent(props: any) {
         setIsOpen(false);
       }
 
-      function onBiteClick(){
-        if (selectedCell.x == 0 || selectedCell.y == 0) return
+      async function onBiteClick(selected: CellModel){
+        //if (selected.x == 0 || selected.y == 0) return;
+        await props.gameContract.attackCell(selected.x, selected.y, {
+          value: selected.newPrice
+        })
+        .then((res: any) =>{
+          //console.log("İs Bignumber: " + BigNumberish.isBigNumberish(res.data)); 
+          console.log(res)
+        }).catch((err: any) => {
+          alert(err.message);
+        });
+
+        const newPrice = await props.gameContract.getCellLastPrice(selected.x, selected.y);
+
+        console.log("New price " + newPrice);
       }
 
       return (
@@ -108,7 +121,7 @@ export default function CellTableComponent(props: any) {
               <tr key={y}>
                 {array.map((cellInfo, x) => (
                   <td key={y + "-" + x}  onClick={() => onCellClick(x, y, cellInfo)}>
-                    Click Me?
+                    Bite Me?
                   </td>
                 ))}
               </tr>
@@ -125,7 +138,7 @@ export default function CellTableComponent(props: any) {
       >
         <h1>Cell: {selectedCell.x + " - " + selectedCell.y}</h1>
         <p>Deposited Price: <b>{ ethers.utils.formatEther(selectedCell.price) }</b></p>
-        <div className="cell_modal_btn cell_modal_btn_bite"  onClick={() => onBiteClick()}>Bite it!</div>
+        <div className="cell_modal_btn cell_modal_btn_bite"  onClick={() => onBiteClick(selectedCell)}>Bite it!</div>
         <div className="cell_modal_btn cell_modal_btn_info">Information</div>
       </Modal>
       </div>
