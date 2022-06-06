@@ -96,19 +96,39 @@ export default function CellTableComponent(props: any) {
 
       async function onBiteClick(selected: CellModel){
         //if (selected.x == 0 || selected.y == 0) return;
+        console.log("Curr price: " + ethers.utils.formatEther(selected.price));
+        console.log("Bite price: " + ethers.utils.formatEther(selected.newPrice));
         await props.gameContract.attackCell(selected.x, selected.y, {
           value: selected.newPrice
         })
         .then((res: any) =>{
           //console.log("İs Bignumber: " + BigNumberish.isBigNumberish(res.data)); 
           console.log(res)
+          successBite(selected);
         }).catch((err: any) => {
-          alert(err.message);
+          failedBite(selected, err);
         });
+      }
 
-        const newPrice = await props.gameContract.getCellLastPrice(selected.x, selected.y);
+      function failedBite(selected: CellModel, err: any) {
+        alert(err.message);
+      }
 
-        console.log("New price " + newPrice);
+      async function successBite(selected: CellModel) {
+        const depositePrice = await props.gameContract.getCellLastPrice(selected.x, selected.y);
+        const newRemotePrice = await props.gameContract.getCellNewPrice(selected.x, selected.y);
+        //setSelectedCell({...selectedCell, newPrice: newPrice, price : depositePrice});
+        console.log("*************SUCCESS*************");
+        console.log("Curr price: " + ethers.utils.formatEther(selected.price));
+        console.log("Bite price: " + ethers.utils.formatEther(selected.newPrice));
+        setSelectedCell(prevState =>({
+          ...prevState,
+          newPrice : newRemotePrice,
+          price : depositePrice
+        }));
+        //setSelectedCell(selectedCell);
+
+        //console.log("New price " + newPrice);
       }
 
       return (

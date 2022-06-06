@@ -10,8 +10,8 @@ export class UserModel {
 }
 
 export class CellModel {
-    x: number = 0
-    y: number = 0
+    readonly x: number = 0
+    readonly y: number = 0
     price: BigNumberish
     newPrice: BigNumberish
     constructor(_x: number, _y: number, _price: BigNumberish, _newPrice: BigNumberish) {
